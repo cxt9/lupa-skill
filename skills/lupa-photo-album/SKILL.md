@@ -24,6 +24,12 @@ Call `lupa_auth_status`. If `logged_in` is false, call `lupa_login` and show the
 
 If the Claude in Chrome tools are available and the user is logged in to Lupa in that browser, you may offer to run the snippet in their Lupa tab for them, but only after they say yes. The session is saved to `~/.config/lupa-mcp/auth.json` and refreshed automatically.
 
+## Paths (important in Cowork)
+
+The `lupa` MCP server runs directly on the user's computer, not in Claude's sandbox. Always give `lupa_upload_photos` the photo folder's **real path on the computer** (for example `/Users/<name>/Pictures/Greece 2026`).
+
+In Cowork, a folder the user shares also appears inside the sandbox as `/sessions/<vm-name>/mnt/<folder name>`. You can use that sandbox path to look at or pre-select photos, but translate it back to the computer path before uploading: for a curated subset, pass `paths` as `<computer folder>/<file name>`. If you don't know the folder's location on the computer, ask the user (in Finder: right-click the folder, hold Option, "Copy ... as Pathname").
+
 ## 2. Gather what the book needs
 
 Before creating anything, make sure you know:

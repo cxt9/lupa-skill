@@ -1,6 +1,6 @@
 {
   "name": "lupa-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Unofficial MCP server for creating Lupa (lupa.co.il) photo books from Claude",
   "main": "dist/lupa-mcp.js",
   "scripts": {

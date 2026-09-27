@@ -27,6 +27,33 @@ Ordering and payment are deliberately **not** automated: the tools stop at a lai
 
 ## Install
 
+**Requirements:** [Node.js](https://nodejs.org) 20 or newer on your computer (the Lupa server is a small Node program), and a Lupa account. Cowork plugins need a paid Claude plan (Pro, Max, Team or Enterprise).
+
+### Claude Cowork (desktop app)
+
+1. Open the **Cowork** tab in the Claude desktop app.
+2. Open **Customize** in the sidebar, then **Plugins**.
+3. Select **Add marketplace** (under **Add**), choose **Add from a repository**, and enter:
+
+   ```
+   cxt9/lupa-skill
+   ```
+
+4. Find **lupa** in the plugin list (under **Discover**, or in the `lupa-skill` marketplace) and click **Install**.
+5. Open the installed **lupa** plugin and go to its **Connectors** tab. If the `lupa` connector isn't connected yet, add or enable it there (installing a plugin doesn't turn its connectors on by itself). It's a local connector, so there's no sign-in on this screen; you connect your Lupa account in your first chat (see [Login](#login)).
+
+Then start a Cowork task, share the folder with your photos, and ask for example:
+
+> Make a Lupa photo book from my "Greece 2026" folder. Pick the best 60 photos, big square, magazine style, opening from the right.
+
+Claude will ask you to connect Lupa the first time, suggest a size and design, upload the photos, lay out the book, and give you a link to review and order it in Lupa's editor.
+
+Good to know in Cowork:
+
+- **The Lupa server runs on your computer**, not in Cowork's sandbox. When Claude uploads, it needs the folder's real location on your Mac (like `/Users/you/Pictures/Greece 2026`). If Claude asks for it, right-click the folder in Finder, hold Option, and choose **Copy "..." as Pathname**.
+- **Updates:** on the Plugins page, use **Check for updates** on the `lupa-skill` marketplace, or turn on **Sync automatically**.
+- If your organization is on a Team or Enterprise plan, an admin may have restricted custom plugins or local connectors.
+
 ### Claude Code
 
 ```bash
@@ -37,13 +64,9 @@ claude plugin marketplace add cxt9/lupa-skill
 claude plugin install lupa@lupa-skill
 ```
 
-Or from inside Claude Code: `/plugin marketplace add cxt9/lupa-skill`, then `/plugin install lupa@lupa-skill`. Restart Claude Code, then ask something like *"Make a Lupa photo book from ~/Pictures/Greece-2026"*.
+Or from inside Claude Code: `/plugin marketplace add cxt9/lupa-skill`, then `/plugin install lupa@lupa-skill`. Start a new session, then ask something like *"Make a Lupa photo book from ~/Pictures/Greece-2026"*. This also works in the **Code** tab of the Claude desktop app.
 
-### Claude Desktop and Cowork
-
-If your Claude app supports plugins, add this repository as a plugin marketplace and install `lupa`, the same as above.
-
-Otherwise, set it up manually:
+### Manual setup (other MCP clients)
 
 1. Clone the repo:
 
@@ -51,7 +74,7 @@ Otherwise, set it up manually:
    git clone https://github.com/cxt9/lupa-skill.git ~/lupa-skill
    ```
 
-2. Add the MCP server to `~/Library/Application Support/Claude/claude_desktop_config.json` and restart Claude:
+2. Register the MCP server in your client. For example, for the Claude desktop app's chat, in `~/Library/Application Support/Claude/claude_desktop_config.json` (then restart the app):
 
    ```json
    {
@@ -64,9 +87,7 @@ Otherwise, set it up manually:
    }
    ```
 
-3. Add the skill: zip the `skills/lupa-photo-album` folder and upload it under Settings > Capabilities > Skills.
-
-The MCP server runs on your computer, so photo paths you give Claude must be files on that computer.
+3. If your client supports skills, add `skills/lupa-photo-album` (for Claude, zip the folder and upload it as a skill).
 
 ## Login
 

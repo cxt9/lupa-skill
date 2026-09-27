@@ -7,7 +7,7 @@ import { WEB_EDITOR_ORIGIN } from "./config.js";
 import { startLoginSession, verifyToken } from "./login.js";
 import { registerTools } from "./tools.js";
 
-const SERVER_VERSION = "0.1.0";
+const SERVER_VERSION = "0.1.1";
 
 async function runServer(): Promise<void> {
   const server = new McpServer(

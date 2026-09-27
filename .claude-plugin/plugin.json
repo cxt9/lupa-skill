@@ -1,6 +1,6 @@
 {
   "name": "lupa",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Create printed photo books on Lupa (lupa.co.il) from Claude: create albums, upload photos, auto-design the book, then review and order in Lupa's editor. Unofficial.",
   "author": {
     "name": "Doron Goldberg"

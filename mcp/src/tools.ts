@@ -167,6 +167,32 @@ const eventTokenSchema = z
   .regex(/^[0-9a-f]{32}$/i, "An album event_token is 32 hex characters (see lupa_list_albums)")
   .describe("The album's event_token from lupa_list_albums or lupa_create_album");
 
+// Cowork's sandbox sees shared folders as /sessions/<vm-name>/mnt/<folder name>/...,
+// but this server runs on the user's computer and needs the real path there.
+const SANDBOX_PATH_PATTERN = /^\/sessions\/[^/]+\/mnt\/([^/]+)/;
+
+async function assertPathExists(requestedPath: string, expectedKind: "file" | "directory"): Promise<string> {
+  const absolutePath = resolve(requestedPath);
+  try {
+    const pathStats = await stat(absolutePath);
+    if (expectedKind === "directory" && !pathStats.isDirectory()) {
+      throw new LupaError(`Not a directory: ${requestedPath}`);
+    }
+    return absolutePath;
+  } catch (statError) {
+    if (statError instanceof LupaError) throw statError;
+    const sandboxMatch = SANDBOX_PATH_PATTERN.exec(absolutePath);
+    if (sandboxMatch) {
+      throw new LupaError(
+        `${requestedPath} is a path inside Claude's sandbox. The Lupa server runs on the user's computer, so pass ` +
+          `the folder's real path there instead (the folder the user shared, e.g. /Users/<name>/.../${sandboxMatch[1]}). ` +
+          "If you don't know it, ask the user.",
+      );
+    }
+    throw new LupaError(`Not found on this computer: ${requestedPath}`);
+  }
+}
+
 async function collectPhotoPaths(
   paths: string[] | undefined,
   directory: string | undefined,
@@ -189,11 +215,9 @@ async function collectPhotoPaths(
   };
 
   if (directory) {
-    const directoryPath = resolve(directory);
-    if (!(await stat(directoryPath)).isDirectory()) throw new LupaError(`Not a directory: ${directory}`);
-    await walkDirectory(directoryPath);
+    await walkDirectory(await assertPathExists(directory, "directory"));
   }
-  for (const filePath of paths ?? []) collectedPaths.push(resolve(filePath));
+  for (const filePath of paths ?? []) collectedPaths.push(await assertPathExists(filePath, "file"));
   return [...new Set(collectedPaths)];
 }
 
@@ -495,8 +519,11 @@ export function registerTools(server: McpServer, client: LupaClient): void {
         "Uploading does not change an already generated book; run lupa_generate_book again afterwards.",
       inputSchema: {
         event_token: eventTokenSchema,
-        directory: z.string().optional().describe("Folder with photos (sorted by file name)"),
-        paths: z.array(z.string()).optional().describe("Individual photo file paths"),
+        directory: z
+          .string()
+          .optional()
+          .describe("Folder with photos (sorted by file name), as a real path on the user's computer, e.g. /Users/<name>/Pictures/Trip"),
+        paths: z.array(z.string()).optional().describe("Individual photo file paths on the user's computer"),
         recursive: z.boolean().default(false).describe("Also include photos in sub-folders of directory"),
         concurrency: z.number().int().min(1).max(8).default(4).describe("Parallel uploads"),
         reopen: z
