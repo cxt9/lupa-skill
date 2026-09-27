@@ -1,0 +1,37 @@
+{
+  "name": "lupa-mcp",
+  "version": "0.1.0",
+  "description": "Unofficial MCP server for creating Lupa (lupa.co.il) photo books from Claude",
+  "main": "dist/lupa-mcp.js",
+  "scripts": {
+    "typecheck": "tsc",
+    "build": "esbuild src/index.ts --bundle --platform=node --target=node20 --format=esm --banner:js=\"#!/usr/bin/env node\" --minify --outfile=dist/lupa-mcp.js",
+    "prepare": "npm run build"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.3",
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2"
+  },
+  "type": "module",
+  "bin": {
+    "lupa-mcp": "dist/lupa-mcp.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "mcp",
+    "claude",
+    "lupa",
+    "photo-book"
+  ]
+}

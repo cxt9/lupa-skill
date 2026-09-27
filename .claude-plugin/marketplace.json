@@ -1,0 +1,14 @@
+{
+  "name": "lupa-skill",
+  "owner": {
+    "name": "Doron Goldberg"
+  },
+  "description": "Unofficial Claude plugin for creating printed Lupa (lupa.co.il) photo books.",
+  "plugins": [
+    {
+      "name": "lupa",
+      "source": "./",
+      "description": "Create printed Lupa (lupa.co.il) photo books from Claude. Unofficial MCP server + skill."
+    }
+  ]
+}

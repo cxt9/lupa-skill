@@ -1,0 +1,11 @@
+node_modules/
+.DS_Store
+*.log
+
+# Never commit Lupa sessions or local env files
+auth.json
+.env
+.env.*
+*.token
+
+# The bundled server in mcp/dist is committed on purpose so the plugin runs without npm install.

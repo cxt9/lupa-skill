@@ -1,0 +1,18 @@
+{
+  "name": "lupa",
+  "version": "0.1.0",
+  "description": "Create printed photo books on Lupa (lupa.co.il) from Claude: create albums, upload photos, auto-design the book, then review and order in Lupa's editor. Unofficial.",
+  "author": {
+    "name": "Doron Goldberg"
+  },
+  "homepage": "https://github.com/cxt9/lupa-skill",
+  "repository": "https://github.com/cxt9/lupa-skill",
+  "license": "MIT",
+  "keywords": ["lupa", "photo-book", "album", "printing", "mcp"],
+  "mcpServers": {
+    "lupa": {
+      "command": "node",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp/dist/lupa-mcp.js"]
+    }
+  }
+}
